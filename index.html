@@ -4,49 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">   
+    <link rel="stylesheet" href="style.css">
     <title>Penjat</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 
 <body>
-    <div id="login-section">
-        <div id="login-container">
-            <h1>Login</h1>
-            <div class="cl-ct">
-                <input type="text">
-                <input type="password">
+    <section id="login-section">
+        <div class="card">
+            <h2>Login</h2>
+            <div class="input-wrapper">
+                <i class="icon-user"></i>
+                <input type="text" class="input-field" placeholder="👤 Username">
             </div>
-            <div>
-                <input type="checkbox">
-                <h6>Remember me</h6>
+            <div class="input-wrapper">
+                <i class="icon-lock"></i>
+                <input type="password" class="input-field" placeholder="🔒 Password">
             </div>
-            <div>
-                <button>Log In</button>
-            </div>
-            <div>
-                <p>Not a member? <a id="sign-up">Sign up now</a></p>
-            </div>
-        </div>
-        <div id="signup-container">
-            <h1>Login</h1>
-            <div class="cl-ct">
-                <input type="text" placeholder=" Username">
-                <input type="password" placeholder="password">
-                <input type="password" placeholder="Repeat the password">
-            </div>
-            <div>
-                <input type="checkbox">
-                <h6>Remember me</h6>
-            </div>
-            <div>
-                <button>Log In</button>
-            </div>
-            <div>
-                <p>Not a member? <a id="sign-up">Sign up now</a></p>
+            <label class="remember">
+                <input type="checkbox"> Remember me
+            </label>
+            <button class="action-btn">LOG IN</button>
+            <div class="toggle-sign">
+                Not a member? <a href="#">Sign up now</a>
             </div>
         </div>
-    </div>
+    </section>
+    <section class="signup-section">
+        <div class="card">
+            <h1>Login</h1>
+            <div class="input-wrapper">
+                <input type="text" class="input-field" placeholder="👤 Username">
+            </div>
+
+            <div class="input-wrapper">
+                <i class="icon-lock">
+
+                </i>
+                <input type="password" class="input-field" placeholder="🔒 Password">
+            </div>
+
+            <div class="input-wrapper">
+                <i class="icon-lock"></i>
+                <input type="password" class="input-field" placeholder="🔒 Password">
+            </div>
+            <label class="remember">
+                <input type="checkbox"> Remember me
+            </label>
+            <div>
+                <button class="action-btn">Log In</button>
+            </div>
+            <div class="toggle-sign">
+                <p>If you have an account <a href="">Log in</a></p>
+            </div>
+        </div>
+    </section>
     <div id="main-section">
         <header>
             <nav>
