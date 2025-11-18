@@ -1,0 +1,32 @@
+body{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-container {
+    margin: 30px;
+    border: 1px solid black;
+    border-radius: 10px;
+    color: rgb(56, 56, 56);
+    height: 100vh;
+    width: 100wh;
+}  
+
+#login-container:nth-child(5) {
+    background-color: brown;
+}
+
+#signup-container {
+    border: 1px solid black;
+    width: 60%;
+}
+
+.cl-ct {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
