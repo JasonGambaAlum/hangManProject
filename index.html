@@ -12,50 +12,50 @@
 <body>
     <section id="login-section">
         <div class="card">
-            <h2>Login</h2>
+            <h1>Log in</h1>
             <div class="input-wrapper">
                 <i class="icon-user"></i>
-                <input type="text" class="input-field" placeholder="👤 Username">
+                <input type="text" class="input-field" placeholder="👤 Usuari">
             </div>
             <div class="input-wrapper">
                 <i class="icon-lock"></i>
-                <input type="password" class="input-field" placeholder="🔒 Password">
+                <input type="password" class="input-field" placeholder="🔒 Contrassenya">
             </div>
             <label class="remember">
-                <input type="checkbox"> Remember me
+                <input type="checkbox"> Recuerdame
             </label>
-            <button class="action-btn">LOG IN</button>
+            <button class="action-btn">iniciar sessió</button>
             <div class="toggle-sign">
-                Not a member? <a href="#">Sign up now</a>
+                Encara no tens compte? <a id="to-signup">Registrat ara.</a>
             </div>
         </div>
     </section>
     <section class="signup-section">
         <div class="card">
-            <h1>Login</h1>
+            <h1>Sign up</h1>
             <div class="input-wrapper">
-                <input type="text" class="input-field" placeholder="👤 Username">
+                <input type="text" class="input-field" placeholder="👤 Usuari">
             </div>
 
             <div class="input-wrapper">
                 <i class="icon-lock">
 
                 </i>
-                <input type="password" class="input-field" placeholder="🔒 Password">
+                <input type="password" class="input-field" placeholder="🔒 Contrassenya">
             </div>
 
             <div class="input-wrapper">
                 <i class="icon-lock"></i>
-                <input type="password" class="input-field" placeholder="🔒 Password">
+                <input type="password" class="input-field" placeholder="🔒 Repeteix la contrassenya">
             </div>
             <label class="remember">
-                <input type="checkbox"> Remember me
+                <input type="checkbox"> Recuerdame
             </label>
             <div>
-                <button class="action-btn">Log In</button>
+                <button class="action-btn">Crear compte</button>
             </div>
             <div class="toggle-sign">
-                <p>If you have an account <a href="">Log in</a></p>
+                <p>Si ja tens compte, <a id="to-login">Entra</a></p>
             </div>
         </div>
     </section>
@@ -71,10 +71,10 @@
                     EL JOC DEL PENJAT
                 </h1>
                 <div>
-                    <button>
+                    <button class="action-btn">
                         JUGAR
                     </button>
-                    <button>
+                    <button class="action-btn">
                         ESTADISTIQUES
                     </button>
                 </div>
@@ -89,8 +89,8 @@
                     <div id="user-input">
                         <label for="input-u"> Comenca a jugar</label>
                         <div>
-                            <input id="input-u" type="text" placeholder="Introdueix una lletra.">
-                            <button> COMPROVAR</button>
+                            <input class="input-field" type="text" placeholder="Introdueix una lletra.">
+                            <button class="action-btn"> COMPROVAR</button>
                         </div>
                     </div>´
                     <span id="span-error">
