@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Penjat</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
@@ -66,7 +65,7 @@
             </nav>
         </header>
         <main>
-            <section>
+            <section class="game_menu">
                 <h1>
                     EL JOC DEL PENJAT
                 </h1>
@@ -79,7 +78,8 @@
                     </button>
                 </div>
             </section>
-            <section>
+            <section style="background-color: rgb(206, 206, 206); height: 500px;">
+            <section class="game_body">
                 <div id="main-container">
                     <div id="word-placeholder">
 
@@ -92,8 +92,8 @@
                             <input class="input-field" type="text" placeholder="Introdueix una lletra.">
                             <button class="action-btn"> COMPROVAR</button>
                         </div>
-                    </div>´
-                    <span id="span-error">
+                    </div>
+                    <span id="span_error">
                         Error: Introdueix nomes un caracter valid.
                     </span>
                 </div>
