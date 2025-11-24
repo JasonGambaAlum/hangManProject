@@ -1,15 +1,15 @@
 body {
     padding: 0;
     margin: 0;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: "Poppins", sans-serif;
     background: linear-gradient(90deg, #d53369 0%, #daae51 100%);
-    justify-content: center;
+    justify-content:space-between;
 
 }
-
 
 .card {
     margin: 30px;
@@ -59,6 +59,36 @@ body {
     margin-right: 8px;
 }
 
+.main-section {
+    width: 90vw;
+    border-radius: 15px;
+    padding: 40px;
+    background: #fff;
+}
+
+.main-section header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.main-button-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.user-input {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #70909c;
+}
+
 .action-btn {
     width: 100%;
     padding: 14px;
@@ -72,15 +102,45 @@ body {
     margin-bottom: 18px;
     transition: 0.2s ease;
 }
-
 .action-btn:hover {
     transform: translateY(-2px);
     opacity: 0.9;
 }
 
+.action-btn:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
 
+.leave-btn {
+  background: linear-gradient(to right, #ffb645, #ff4b5c);
+  font-family: inherit;
+  color: white;
+  padding: 0.6em 1.3em;
+  font-weight: 900;
+  font-size: 18px;
+  border: 3px solid rgb(213, 213, 213);
+  border-radius: 0.4em;
+  box-shadow: 0.1em 0.1em;
+  cursor: pointer;
+}
 
+.leave-btn:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
 
+.leave-btn:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
+
+.user-input div {
+    display: flex;
+    padding: 20px 0px 20px 0px ;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
 
 .toggle-sign {
     margin-top: 5px;
@@ -90,4 +150,10 @@ body {
     color: #007bff;
     text-decoration: none;
     font-weight: 600;
+}
+
+footer {
+    margin-top: 20px;
+    font-size: 24px;
+    color: #fefefe;
 }
