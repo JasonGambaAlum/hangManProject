@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Penjat</title>
     <link rel="stylesheet" href="./styles.css">
+    <script src="main.js"></script>
 </head>
 
 <body>
-    <section id="login-section">
+    <section id="login-section" style="display: block;">
         <div class="card">
             <h1>Log in</h1>
             <div class="input-wrapper">
@@ -29,7 +30,7 @@
             </div>
         </div>
     </section>
-    <section class="signup-section">
+    <section class="signup-section" style="display: none;">
         <div class="card">
             <h1>Sign up</h1>
             <div class="input-wrapper">
@@ -58,14 +59,17 @@
             </div>
         </div>
     </section>
-    <div id="main-section">
+    <section class="main-section"style="display: none;">
         <header>
-            <nav>
-
-            </nav>
+            <h1>
+                🪑𓍯  EL JOC DEL PENJAT  😵̷̊̊̊̊̊
+            </h1>
+            <button class="leave-btn">
+                SORTIR   ➜]
+            </button>
         </header>
         <main>
-            <section class="game_menu">
+            <section>
                 <h1>
                     EL JOC DEL PENJAT
                 </h1>
@@ -78,8 +82,7 @@
                     </button>
                 </div>
             </section>
-            <section style="background-color: rgb(206, 206, 206); height: 500px;">
-            <section class="game_body">
+            <section>
                 <div id="main-container">
                     <div id="word-placeholder">
 
@@ -92,17 +95,19 @@
                             <input class="input-field" type="text" placeholder="Introdueix una lletra.">
                             <button class="action-btn"> COMPROVAR</button>
                         </div>
-                    </div>
-                    <span id="span_error">
+                    </div>´
+                    <span id="span-error">
                         Error: Introdueix nomes un caracter valid.
                     </span>
                 </div>
             </section>
         </main>
-    </div>
+    </section>
     <footer>
         <p>
-            Joc fet per Eric & Jason
+            <strong>
+                ©️ Joc fet per / \ Eric & Jason 
+            </strong>
         </p>
     </footer>
 </body>
