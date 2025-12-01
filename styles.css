@@ -1,231 +1,265 @@
+:root {
+    --bg-1: #0f1724;
+    /* deep navy */
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent-1: #ff7a59;
+    --accent-2: #ffb866;
+    --glass: rgba(255, 255, 255, 0.06);
+    --radius-lg: 18px;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
 body {
-    padding: 0;
+    height: 100%;
+}
+
+body {
     margin: 0;
-    height: 100vh;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background: linear-gradient(135deg, #0b1220 0%, #1b2a44 60%);
+    color: #081020;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(90deg, #d53369 0%, #daae51 100%);
-    justify-content:space-between;
-
+    justify-content: center;
+    padding: 40px 16px;
 }
 
 .card {
-    margin: 30px;
-    width: 400px;
-    background: #fff;
-    padding: 40px 32px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-    text-align: center;
+    width: 100%;
+    max-width: 420px;
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.5);
+    margin: 18px;
+}
+
+.card h1 {
+    font-size: 1.4rem;
+    margin: 0 0 14px 0;
+    color: #0f1724
 }
 
 .input-wrapper {
     position: relative;
+    margin-bottom: 12px
 }
 
 .input-wrapper i {
     position: absolute;
+    left: 12px;
     top: 50%;
-    left: 15px;
     transform: translateY(-50%);
-    color: #9c9c9c;
-    font-size: 16px;
+    color: var(--muted)
 }
 
 .input-field {
-    width: 85%;
-    background: #f1f1f1;
-    padding: 14px 14px 14px 44px;
-    margin-bottom: 18px;
+    width: 100%;
+    padding: 12px 14px 12px 44px;
     border-radius: 10px;
-    border: none;
-    outline: none;
+    border: 1px solid #e6e9ef;
+    background: #fbfdff;
     font-size: 15px;
-    color: #555;
-    position: relative;
+    color: #0f1724;
+    outline: none;
+    transition: box-shadow .15s;
+}
+
+.input-field:focus {
+    box-shadow: 0 6px 18px rgba(15, 23, 36, 0.06)
 }
 
 .remember {
     display: flex;
     align-items: center;
-    margin: 5px 0 20px;
+    gap: 8px;
+    color: var(--muted);
     font-size: 14px;
-    color: #666;
-}
-
-.remember input {
-    margin-right: 8px;
-}
-
-.main-section {
-    width: 90vw;
-    border-radius: 15px;
-    padding: 40px;
-    background: #fff;
-}
-
-.main-section header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.main-button-section {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.user-input {
-    display: block;
-    text-align: left;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #70909c;
+    margin: 8px 0 18px
 }
 
 .action-btn {
+    display: inline-block;
     width: 100%;
-    padding: 14px;
-    border-radius: 25px;
-    background: linear-gradient(to right, #ffb645, #ff4b5c);
-    color: white;
+    padding: 12px;
+    border-radius: 999px;
     border: none;
-    font-size: 16px;
-    font-weight: 600;
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    color: white;
+    font-weight: 700;
     cursor: pointer;
-    margin-bottom: 18px;
-    transition: 0.2s ease;
+    box-shadow: 0 8px 20px rgba(255, 122, 89, 0.18);
+    transition: transform .12s ease, box-shadow .12s
 }
+
 .action-btn:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(255, 122, 89, 0.22)
 }
 
-.action-btn:active {
-  transform: translate(0.05em, 0.05em);
-  box-shadow: 0.05em 0.05em;
+.link-button {
+    background: none;
+    border: none;
+    color: var(--accent-2);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0
 }
 
-.leave-btn {
-  background: linear-gradient(to right, #ffb645, #ff4b5c);
-  font-family: inherit;
-  color: white;
-  padding: 0.6em 1.3em;
-  font-weight: 900;
-  font-size: 18px;
-  border: 3px solid rgb(213, 213, 213);
-  border-radius: 0.4em;
-  box-shadow: 0.1em 0.1em;
-  cursor: pointer;
-}
-
-.leave-btn:hover {
-  transform: translate(-0.05em, -0.05em);
-  box-shadow: 0.15em 0.15em;
-}
-
-.leave-btn:active {
-  transform: translate(0.05em, 0.05em);
-  box-shadow: 0.05em 0.05em;
-}
-
-.user-input div {
-    display: flex;
-    padding: 20px 0px 20px 0px ;
-    flex-direction: column;
-    margin-bottom: 5px;
+.link-button:hover {
+    text-decoration: underline
 }
 
 .toggle-sign {
-    margin-top: 5px;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 14px;
+    text-align: center
 }
 
-.toggle-sign a {
-    color: #007bff;
-    text-decoration: none;
+.toggle-sign p {
+    margin: 6px 0
+}
+
+.error {
+    display: none;
+    color: #e11d48;
     font-weight: 600;
+    font-size: 0.95rem
+}
+
+/* Hide app sections by default; JS will show the active one */
+#signup-section,
+#login-section,
+#game-section {
+    display: none
+}
+
+/* Game layout */
+.main-game {
+    width: 100%;
+    max-width: 900px;
+    background: linear-gradient(180deg, #f7fafc, #ffffff);
+    border-radius: 16px;
+    padding: 18px
+}
+
+.main-game header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 6px
+}
+
+.main-game h1 {
+    font-size: 1.25rem;
+    margin: 0
+}
+
+.leave-btn {
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 800
+}
+
+.leave-btn:hover {
+    transform: translateY(-2px)
+}
+
+.game-mainmenu-btn {
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+    margin: 10px;
+    width: 160px
+}
+
+.game-mainmenu-btn:hover {
+    opacity: .95
+}
+
+#main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center
+}
+
+#word-placeholder {
+    font-family: monospace;
+    font-size: 2rem;
+    letter-spacing: 6px;
+    padding: 14px 18px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #eef2f7
+}
+
+#game-stats {
+    min-height: 24px;
+    color: var(--muted)
+}
+
+.game-textbox {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #e6e9ef;
+    width: 180px
+}
+
+.game-button {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer
 }
 
 #span_error {
-    color: red;
-    font-size: 20px;
+    display: none;
+    color: #e11d48;
     font-weight: 700;
-    text-align: center;
+    text-align: center
 }
 
-/** MENU SECCTIONS **/
-.game-secction {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+footer {
+    margin-top: 28px;
     text-align: center;
+    color: #cbd5e1
 }
-.main-game {
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 60%;
-    border-radius: 15px;
-    padding: 40px;
-    margin: 50px;
-    background: #fff;
-}
-.game-mainmenu-btn {    
-    display: inline-block;
-    justify-content: center;
-    justify-content: space-between;
-    width: 47%;
-    padding: 15px;
-    border-radius: 25px;
-    background: linear-gradient(to right, #ffb645, #ff4b5c);
-    color: white;
-    border: none;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-bottom: 100px;
-    
-    transition: 0.2s ease;
-}
-.game-button {
-    display: inline-block;
-    justify-content: center;
-    width: 50%;
-    padding: 15px;
-    border-radius: 25px;
-    background: linear-gradient(to right, #ffb645, #ff4b5c);
-    color: white;
-    border: none;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-bottom: 40px;
-    transition: 0.2s ease;
-}
-label {
-    display: flex;
-    font-size: 25px;
-    font-weight: 550;
-    margin-bottom: 20px;
-}
-.game-textbox {
-    font-size: 30px;
-    width: 85%;
-    background: #f1f1f1;
-    padding: 14px 14px 14px 44px;
-    margin-bottom: 18px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    color: #555;
-    position: relative;
+
+@media (max-width:720px) {
+    .card {
+        padding: 18px;
+        margin: 10px
+    }
+
+    .main-game {
+        padding: 12px
+    }
+
+    .game-mainmenu-btn {
+        width: 46%
+    }
+
+    #word-placeholder {
+        font-size: 1.4rem
+    }
 }

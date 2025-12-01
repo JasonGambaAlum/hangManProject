@@ -10,105 +10,118 @@
 </head>
 
 <body>
-    <section id="login-section" style="display: block;">
+    <section id="signup-section">
         <div class="card">
-            <h1>Log in</h1>
-            <div class="input-wrapper">
-                <i class="icon-user"></i>
-                <input type="text" class="input-field" placeholder="👤 Usuari">
-            </div>
-            <div class="input-wrapper">
-                <i class="icon-lock"></i>
-                <input type="password" class="input-field" placeholder="🔒 Contrassenya">
-            </div>
-            <label class="remember">
-                <input type="checkbox"> Recuerdame
-            </label>
-            <button class="action-btn">iniciar sessió</button>
-            <div class="toggle-sign">
-                Encara no tens compte? <a id="to-signup">Registrat ara.</a>
-            </div>
-        </div>
-    </section>
-    <section class="signup-section" style="display: none;">
-        <div class="card">
-            <h1>Sign up</h1>
-            <div class="input-wrapper">
-                <input type="text" class="input-field" placeholder="👤 Usuari">
-            </div>
+            <form id="signup-form">
+                <h1>Sign up</h1>
+                <div class="input-wrapper">
+                    <input type="text" name="user_name" autocomplete="user_name" required class="input-field"
+                        placeholder="👤 Usuari">
+                </div>
 
-            <div class="input-wrapper">
-                <i class="icon-lock">
+                <div class="input-wrapper">
+                    <i class="icon-lock">
 
-                </i>
-                <input type="password" class="input-field" placeholder="🔒 Contrassenya">
-            </div>
+                    </i>
+                    <input type="password" name="user_pass1" required autocomplete="new-password" class="input-field"
+                        placeholder="🔒 Contrassenya">
+                </div>
 
-            <div class="input-wrapper">
-                <i class="icon-lock"></i>
-                <input type="password" class="input-field" placeholder="🔒 Repeteix la contrassenya">
-            </div>
-            <label class="remember">
-                <input type="checkbox"> Recuerdame
-            </label>
-            <div>
-                <button class="action-btn">Crear compte</button>
-            </div>
-            <div class="toggle-sign">
-                <p>Si ja tens compte, <a id="to-login">Entra</a></p>
-            </div>
-        </div>
-    </section>
-    <div class="game-secction" style="background: #e7e7e7;">
-    <section class="main-game"style="display: ;"><!-- PONER DISPLAY NONE -->
-        <header>
-            <h1>
-                🪑𓍯  EL JOC DEL PENJAT  😵̷̊̊̊̊̊
-            </h1>
-            <button class="leave-btn">
-                SORTIR   ➜]
-            </button>
-        </header>
-        <main>
-            <section>
-                <h1 style="margin-top: 100px;">
-                    EL JOC DEL PENJAT
-                </h1>
+                <div class="input-wrapper">
+                    <i class="icon-lock"></i>
+                    <input type="password" name="user_pass2" required autocomplete="check-new-password"
+                        class="input-field" placeholder="🔒 Repeteix la contrassenya">
+                </div>
+                <label class="remember">
+                    <input type="checkbox" name="checkbx"> Recuerdame
+                </label>
                 <div>
-                    <button class="game-mainmenu-btn">
-                        JUGAR
-                    </button>
-                    <button class="game-mainmenu-btn">
-                        ESTADISTIQUES
-                    </button>
+                    <button class="action-btn">Crear compte</button>
                 </div>
-            </section>
-            <section>
-                <div id="main-container">
-                    <div id="word-placeholder">
+            </form>
+            <div class="toggle-sign">
+                <span id="wrong-pass" class="error" aria-hidden="true">Les contrassenyas no son iguals.</span>
+                <p>Si ja tens compte, <button id="to-login" class="link-button">Entra</button></p>
+            </div>
+        </div>
+    </section>
 
-                    </div>
-                    <div id="game-stats">
-                    </div>
-                    <div id="user-input">
-                        <label for="input-u"> Comença a jugar</label>
-                        <div>
-                            <input class="game-textbox" type="text" placeholder="Introdueix una lletra.">
-                            <button class="game-button"> COMPROVAR</button>
-                        </div>
-                    </div>
-                    <span id="span_error">
-                        Error: Introdueix nomes un caracter valid.
-                    </span>
+    <section id="login-section">
+        <div class="card">
+            <form id="login-form">
+                <h1>Log in</h1>
+                <div class="input-wrapper">
+                    <i class="icon-user"></i>
+                    <input type="text" name="user_name" required autocomplete="user_name" class="input-field"
+                        placeholder="👤 Usuari">
                 </div>
-            </section>
-        </main>
-    </div>
+                <div class="input-wrapper">
+                    <i class="icon-lock"></i>
+                    <input type="password" name="user_pass" required autocomplete="user_pass" class="input-field"
+                        placeholder="🔒 Contrassenya">
+                </div>
+                <label class="remember">
+                    <input type="checkbox" name="rememberme"> Recuerdame
+                </label>
+                <button id="submit-btn" type="submit" class="action-btn">iniciar sessió</button>
+            </form>
+            <span id="no-user" class="error" aria-hidden="true">L'usuari no existeis!!</span>
+            <div class="toggle-sign">
+                Encara no tens compte? <button id="to-signup" class="link-button">Registrat ara.</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="game-section" class="main-game"><!-- PONER DISPLAY NONE -->
+        <div>
+            <header>
+                <h1>
+                EL JOC DEL PENJAT 😵̷̊̊̊̊̊
+                </h1>
+                <button class="leave-btn" id="exit-btn">
+                    SORTIR ➜]
+                </button>
+            </header>
+            <main>
+                <section>
+                    <h1>
+                        EL JOC DEL PENJAT
+                    </h1>
+                    <div>
+                        <button id="play-btn" class="game-mainmenu-btn">
+                            JUGAR
+                        </button>
+                        <button id="stats-btn" class="game-mainmenu-btn">
+                            ESTADISTIQUES
+                        </button>
+                    </div>
+                </section>
+                <section id="main-section">
+                    <div id="main-container">
+                        <div id="word-placeholder">
+                            XXXXXXXXX
+                        </div>
+                        <div id="game-stats">
+                        </div>
+                        <form id="user-choose">
+                            <label> Comença a jugar</label>
+                            <div>
+                                <input class="game-textbox" type="text" placeholder="Introdueix una lletra.">
+                                <button type="submit" id="check-btn" class="game-button"> COMPROVAR</button>
+                            </div>
+                        </form>
+                        <span id="span_error">
+                            Error: Introdueix nomes un caracter valid.
+                        </span>
+                    </div>
+                </section>
+            </main>
+        </div>
     </section>
     <footer>
         <p>
             <strong>
-                ©️ Joc fet per / \ Eric & Jason 
+                ©️ Joc fet per / \ Eric & Jason
             </strong>
         </p>
     </footer>
