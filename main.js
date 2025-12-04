@@ -65,37 +65,31 @@ function signup() {
     const display = new DisplayOrder();
     const dataCtrl = new DataController();
 
-    if (signupForm) {
-        signupForm.addEventListener('submit', (ev) => {
-            ev.preventDefault();
 
-            const form = ev.currentTarget || ev.target;
-            const formData = new FormData(form);
-            const dataObj = Object.fromEntries(formData.entries());
+    signupForm.addEventListener('submit', (ev) => {
+        ev.preventDefault();
 
-            // Simple password match validation
-            if (dataObj?.user_pass1 === dataObj?.user_pass2) {
-                if (spanError) spanError.style.display = 'none';
-                dataObj.stats = {};
-                dataCtrl.setCookie(dataObj?.user_name, JSON.stringify(dataObj), 1);
-                console.log('New user saved:', dataObj);
-                display.changePage(3);
-            } else {
-                if (spanError) spanError.style.display = 'block';
-            }
-        });
-    } else {
-        console.warn('Signup form with selector "#signup-form" not found.');
-    }
+        const form = ev.currentTarget || ev.target;
+        const formData = new FormData(form);
+        const dataObj = Object.fromEntries(formData.entries());
 
-    if (toLoginLink) {
-        toLoginLink.addEventListener('click', (ev) => {
-            if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
-            display.changePage(2);
-        });
-    } else {
-        console.warn('Login link with selector "#to-login" not found.');
-    }
+        if (dataObj?.user_pass1 === dataObj?.user_pass2) {
+            if (spanError) spanError.style.display = 'none';
+            dataObj.stats = {};
+            dataCtrl.setCookie(dataObj?.user_name, JSON.stringify(dataObj), 1);
+            console.log('New user saved:', dataObj);
+            display.changePage(3);
+        } else {
+            if (spanError) spanError.style.display = 'block';
+        }
+    });
+
+
+
+    toLoginLink.addEventListener('click', (ev) => {
+        if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
+        display.changePage(2);
+    });
 }
 
 function login() {
@@ -105,11 +99,6 @@ function login() {
 
     const display = new DisplayOrder();
     const dataCtrl = new DataController();
-
-    if (!loginForm) {
-        console.warn('Login form with selector "#login-form" not found.');
-        return;
-    }
 
     loginForm.addEventListener('submit', (ev) => {
         ev.preventDefault();
@@ -128,27 +117,24 @@ function login() {
             } else {
                 if (spanError) {
                     spanError.style.display = 'block';
-                    spanError.innerHTML = 'Incorrect password';
+                    spanError.innerHTML = 'Contrasenya incorrecta';
                 }
                 throw new Error('Incorrect password');
             }
         } else {
             if (spanError) {
                 spanError.style.display = 'block';
-                spanError.innerHTML = "User don't exist";
+                spanError.innerHTML = "L'usuari no existeix";
             }
             throw new Error("User don't exist");
         }
     });
 
-    if (signupLink) {
-        signupLink.addEventListener('click', (ev) => {
-            if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
-            display.changePage(1);
-        });
-    } else {
-        console.warn('Sign-up link with selector "#to-signup" not found.');
-    }
+    signupLink.addEventListener('click', (ev) => {
+        if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
+        display.changePage(1);
+    });
+
 }
 
 class DisplayOrder {
@@ -190,6 +176,7 @@ class DisplayOrder {
     }
 
 }
+let statsPage;
 
 function game(user) {
 
@@ -213,18 +200,36 @@ function game(user) {
 
 
     playBtn.addEventListener('click', (ev) => {
+        let hangmanPage = window.open("popup.html", "_blank", "scrollbars=yes,resizable=yes,top=0,left=1000,height=350,width=650,fullscreen=0,menubar=0,location=0,toolbar=0");
         if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
         console.log('Play btn pressed');
         if (mainSection) mainSection.style.display = 'block';
+        hangmanPage.postMessage({ data: data?.stats }, "http://127.0.0.1:5500/");
+        hangmanPage.focus();
     });
-
 
 
     statsBtn.addEventListener('click', (ev) => {
         if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
-        console.log('Stats btn pressed');
         const data = dataCtrl.getCookie(user);
-        console.log(data?.stats);
+        console.log(typeof statsPage, statsPage, "button pressed")
+
+
+        if (statsPage == undefined) {
+            console.log(typeof statsPage, statsPage, "button pressed on true block")
+
+
+            statsPage =  window.open("statistics.html", "_blank", "scrollbars=yes,resizable=yes,top=500,left=1000,height=350,width=650,fullscreen=0,menubar=0,location=0,toolbar=0");
+            statsPage.postMessage({ data: "Holaaaaa" }, "http://127.0.0.1:5500/");
+            console.log(typeof statsPage, statsPage)
+        } else {
+            console.log(typeof statsPage, statsPage, "button pressed on false block")
+
+
+            console.log("Focus page stats")
+            statsPage.focus()
+        }
+
     });
 
 
