@@ -7,6 +7,7 @@
     <title>Penjat</title>
     <link rel="stylesheet" href="./styles.css">
     <script src="main.js"></script>
+    <script src="paraules.js"></script>
 </head>
 
 <body>
@@ -76,7 +77,7 @@
         <div>
             <header>
                 <h1>
-                EL JOC DEL PENJAT 😵̷̊̊̊̊̊
+                    EL JOC DEL PENJAT 😵̷̊̊̊̊̊
                 </h1>
                 <button class="leave-btn" id="exit-btn">
                     SORTIR ➜]
@@ -84,24 +85,30 @@
             </header>
             <main>
                 <section style="display: flex;">
-                        <button id="play-btn" class="game-mainmenu-btn">
-                            JUGAR
-                        </button>
-                        <button id="stats-btn" class="game-mainmenu-btn">
-                            ESTADISTIQUES
-                        </button>
+                    <button id="play-btn" class="game-mainmenu-btn">
+                        JUGAR
+                    </button>
+                    <button id="stats-btn" class="game-mainmenu-btn">
+                        ESTADISTIQUES
+                    </button>
                 </section>
                 <section id="main-section" style="display: none;">
                     <div id="main-container">
-                        <div id="word-placeholder">
-                            XXXXXXXXX
-                        </div>
                         <div id="game-stats">
+                            <p style="text-align: center;" id="word-placeholder" aria-placeholder="XXXXXXXXX">
+                            </p>
+                            <div style="text-align: center;">
+                                “Endevina la paraula de <span id="word-size" style="font-weight: bolder;"></span>
+                                lletres"
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span id="used-chars" style="font-weight: bolder; margin: 10px; width: 100%; text-align: center;"></span>
+                            </div>
                         </div>
                         <form id="user-choose">
-                            <label> Comença a jugar</label>
                             <div>
-                                <input class="game-textbox" type="text" placeholder="Introdueix una lletra.">
+                                <input class="game-textbox" id="check-inpt" type="text"
+                                    placeholder="Introdueix una lletra.">
                                 <button type="submit" id="check-btn" class="game-button"> COMPROVAR</button>
                             </div>
                         </form>

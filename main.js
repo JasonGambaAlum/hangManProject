@@ -1,8 +1,5 @@
-
 class DataController {
-
-    constructor() {
-    }
+    constructor() { }
 
     setCookie(name, value, days) {
         const expires = new Date();
@@ -14,80 +11,57 @@ class DataController {
         const cookies = document.cookie ? document.cookie.split('; ') : [];
         for (const cookie of cookies) {
             const [key, ...rest] = cookie.split('=');
-            const value = rest.join('=');
-            if (key === name) return decodeURIComponent(value);
+            if (key === name) return decodeURIComponent(rest.join('='));
         }
         return null;
     }
 
-    setDatalStorage(name, value) {
-        localStorage.setItem(name, value);
+    setDataStorage(name, value) {
+        localStorage.setItem(name, JSON.stringify(value));
     }
 
-    getDataLStorage(name) {
-        const lstorage = localStorage.getItem(name);
-        if (!lstorage) return null;
+    getDataStorage(name) {
+        const data = localStorage.getItem(name);
+        if (!data) return null;
         try {
-            return JSON.parse(lstorage);
-        } catch (err) {
-            return lstorage;
+            return JSON.parse(data);
+        } catch {
+            return data;
         }
     }
 
     clearAllCookies() {
-        const cookies = document.cookie ? document.cookie.split('; ') : [];
-        for (let c = 0; c < cookies.length; c++) {
-            let d = window.location.hostname.split('.');
-            while (d.length > 0) {
-                const cookieBase =
-                    encodeURIComponent(cookies[c].split(';')[0].split('=')[0]) +
-                    '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' +
-                    d.join('.') +
-                    ' ;path=';
-                let p = location.pathname.split('/');
-                document.cookie = cookieBase + '/';
-                while (p.length > 0) {
-                    document.cookie = cookieBase + p.join('/');
-                    p.pop();
-                }
-                d.shift();
-            }
-        }
+        document.cookie.split('; ').forEach(c => {
+            const cookieName = c.split('=')[0];
+            document.cookie = `${cookieName}=;expires=Thu, 01-Jan-1970 00:00:01 GMT;path=/`;
+        });
     }
-
 }
 
 function signup() {
     const signupForm = document.querySelector('#signup-form');
     const toLoginLink = document.querySelector('#to-login');
     const spanError = document.getElementById('wrong-pass');
-
     const display = new DisplayOrder();
     const dataCtrl = new DataController();
 
-
     signupForm.addEventListener('submit', (ev) => {
         ev.preventDefault();
-
-        const form = ev.currentTarget || ev.target;
-        const formData = new FormData(form);
+        const formData = new FormData(ev.currentTarget);
         const dataObj = Object.fromEntries(formData.entries());
 
-        if (dataObj?.user_pass1 === dataObj?.user_pass2) {
-            if (spanError) spanError.style.display = 'none';
+        if (dataObj.user_pass1 === dataObj.user_pass2) {
+            spanError.style.display = 'none';
             dataObj.stats = {};
-            dataCtrl.setCookie(dataObj?.user_name, JSON.stringify(dataObj), 1);
-            console.log('New user saved:', dataObj);
+            dataCtrl.setCookie(dataObj.user_name, JSON.stringify(dataObj), 7);
             display.changePage(3);
         } else {
-            if (spanError) spanError.style.display = 'block';
+            spanError.style.display = 'block';
         }
     });
 
-
-
-    toLoginLink.addEventListener('click', (ev) => {
-        if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
+    toLoginLink?.addEventListener('click', (ev) => {
+        ev.preventDefault();
         display.changePage(2);
     });
 }
@@ -96,51 +70,40 @@ function login() {
     const loginForm = document.querySelector('#login-form');
     const spanError = document.getElementById('no-user');
     const signupLink = document.querySelector('#to-signup');
-
     const display = new DisplayOrder();
     const dataCtrl = new DataController();
 
     loginForm.addEventListener('submit', (ev) => {
         ev.preventDefault();
-
-        const form = ev.currentTarget || ev.target;
-        const formData = new FormData(form);
+        const formData = new FormData(ev.currentTarget);
         const dataObj = Object.fromEntries(formData.entries());
 
-        const userServerSide = dataCtrl.getCookie(dataObj?.user_name);
-        if (userServerSide != null) {
-            const userServer = JSON.parse(userServerSide);
-            console.log('Found user:', userServer);
-            if (spanError) spanError.style.display = 'none';
-            if (userServer.user_pass1 === dataObj.user_pass) {
-                display.changePage(3, dataObj?.user_name);
-            } else {
-                if (spanError) {
-                    spanError.style.display = 'block';
-                    spanError.innerHTML = 'Contrasenya incorrecta';
-                }
-                throw new Error('Incorrect password');
-            }
-        } else {
-            if (spanError) {
-                spanError.style.display = 'block';
-                spanError.innerHTML = "L'usuari no existeix";
-            }
-            throw new Error("User don't exist");
+        const userServerSide = dataCtrl.getCookie(dataObj.user_name);
+        if (!userServerSide) {
+            spanError.style.display = 'block';
+            spanError.innerHTML = "L'usuari no existeix";
+            return;
         }
+
+        const userServer = JSON.parse(userServerSide);
+        if (userServer.user_pass1 !== dataObj.user_pass) {
+            spanError.style.display = 'block';
+            spanError.innerHTML = 'Contrasenya incorrecta';
+            return;
+        }
+
+        spanError.style.display = 'none';
+        display.changePage(3, dataObj.user_name);
     });
 
-    signupLink.addEventListener('click', (ev) => {
-        if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
+    signupLink?.addEventListener('click', (ev) => {
+        ev.preventDefault();
         display.changePage(1);
     });
-
 }
 
 class DisplayOrder {
-
-    constructor() {
-    }
+    constructor() { }
 
     changePage(page, user = "No-user") {
 
@@ -158,9 +121,10 @@ class DisplayOrder {
             case 2:
                 signupPage.style.display = "none";
                 loginPage.style.display = "block";
-                gamePage.style.display = "block";
+                gamePage.style.display = "none";
                 login();
-                game("jason")
+                //gamePage.style.display = "block";
+                // game(user);
                 break;
             case 3:
                 signupPage.style.display = "none";
@@ -171,94 +135,125 @@ class DisplayOrder {
             default:
                 console.log("[Error 404]");
                 alert("[Error 404]");
-                break;
         }
     }
-
 }
-let statsPage;
 
 function game(user) {
+    let statsPage;
+    let hangmanPage;
+    let counter = 0;
 
-    const display = new DisplayOrder()
-    const dataCtrl = new DataController()
+    const display = new DisplayOrder();
+    const dataCtrl = new DataController();
+    const data = dataCtrl.getCookie(user);
 
-    validCharacters = "&,',+,-,0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,²,³,·,À,Á,Å,Æ,Ç,È,É,Í,Ñ,Ò,Ó,Ö,Ø,Ú,à,á,â,ã,ä,å,ç,è,é,ê,ë,ì,í,î,ï,ñ,ò,ó,ô,ö,ø,ù,ú,û,ü,ý,Ā,ā,ă,ć,Č,č,Ē,ē,ė,ę,ī,ı,ķ,Ł,ł,ń,ň,Ō,ō,ŏ,ő,œ,ř,Ś,ś,Ş,ş,Š,š,ţ,ū,ŭ,ů,ź,ż,Ž,ž,ǎ,ǒ,Ǧ,ǧ,ḍ,ḗ,Ḥ,ḥ,ḫ,ṇ,ṛ,ṣ,Ṭ,ṭ,₂"
-    const exitBtn = document.querySelector("#exit-btn");
-    const playBtn = document.querySelector("#play-btn");
-    const statsBtn = document.querySelector("#stats-btn");
-    const checkBtn = document.querySelector("#user-choose");
-    const mainSection = document.getElementById("main-section");
+    let randomWord = '';
+    let wordToGuess = '';
+    let usedChars = [];
 
+    const validCharacters = "&,',+,-,0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,²,³,·,À,Á,Å,Æ,Ç,È,É,Í,Ñ,Ò,Ó,Ö,Ø,Ú,à,á,â,ã,ä,å,ç,è,é,ê,ë,ì,í,î,ï,ñ,ò,ó,ô,ö,ø,ù,ú,û,ü,ý,Ā,ā,ă,ć,Č,č,Ē,ē,ė,ę,ī,ı,ķ,Ł,ł,ń,ň,Ō,ō,ŏ,ő,œ,ř,Ś,ś,Ş,ş,Š,š,ţ,ū,ŭ,ů,ź,ż,Ž,ž,ǎ,ǒ,Ǧ,ǧ,ḍ,ḗ,Ḥ,ḥ,ḫ,ṇ,ṛ,ṣ,Ṭ,ṭ,₂";
 
-    exitBtn.addEventListener('click', (ev) => {
-        if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
-        console.log('Exit btn pressed');
+    const elements = {
+        exitBtn: document.querySelector("#exit-btn"),
+        playBtn: document.querySelector("#play-btn"),
+        statsBtn: document.querySelector("#stats-btn"),
+        checkBtn: document.querySelector("#user-choose"),
+        mainSection: document.getElementById("main-section"),
+        wordPlaceholder: document.getElementById("word-placeholder"),
+        wordSize: document.getElementById("word-size"),
+        checkInput: document.getElementById("check-inpt"),
+        usedCharsSpan: document.getElementById("used-chars")
+    };
+
+    const openWindow = (url, top, left) => window.open(url, "_blank", `scrollbars=yes,resizable=yes,top=${top},left=${left},height=350,width=650,fullscreen=0,menubar=0,location=0,toolbar=0`);
+
+    elements.exitBtn.addEventListener('click', (ev) => {
+        ev.preventDefault();
         display.changePage(2);
     });
 
+    elements.playBtn.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        randomWord = PARAULES[Math.floor(Math.random() * PARAULES.length)];
+        wordToGuess = randomWord.replace(/./g, "X");
+        usedChars = [];
+        counter = 0;
 
+        elements.wordPlaceholder.innerHTML = wordToGuess;
+        elements.wordSize.innerHTML = randomWord.length;
 
-    playBtn.addEventListener('click', (ev) => {
-        let hangmanPage = window.open("popup.html", "_blank", "scrollbars=yes,resizable=yes,top=0,left=1000,height=350,width=650,fullscreen=0,menubar=0,location=0,toolbar=0");
-        if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
-        console.log('Play btn pressed');
-        if (mainSection) mainSection.style.display = 'block';
-        hangmanPage.postMessage({ data: data?.stats }, "http://127.0.0.1:5500/");
-        hangmanPage.focus();
+        if (!hangmanPage || hangmanPage.closed) {
+            hangmanPage = openWindow("popup.html", 0, 1000);
+            elements.mainSection.style.display = 'block';
+            hangmanPage.postMessage({ data }, "*");
+            hangmanPage.focus();
+        } else {
+            hangmanPage.focus();
+        }
     });
 
+    elements.statsBtn?.addEventListener('click', (ev) => {
+        ev.preventDefault();
 
-    statsBtn.addEventListener('click', (ev) => {
-        if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
-        const data = dataCtrl.getCookie(user);
-        console.log(typeof statsPage, statsPage, "button pressed")
-
-
-        if (statsPage == undefined) {
-            console.log(typeof statsPage, statsPage, "button pressed on true block")
-
-
-            statsPage =  window.open("statistics.html", "_blank", "scrollbars=yes,resizable=yes,top=500,left=1000,height=350,width=650,fullscreen=0,menubar=0,location=0,toolbar=0");
-            statsPage.postMessage({ data: "Holaaaaa" }, "http://127.0.0.1:5500/");
-            console.log(typeof statsPage, statsPage)
+        if (!statsPage || statsPage.closed) {
+            statsPage = openWindow("statistics.html", 500, 1000);
+            statsPage.postMessage({ data }, "*");
         } else {
-            console.log(typeof statsPage, statsPage, "button pressed on false block")
+            statsPage.focus();
+        }
+    });
 
+    elements.checkInput?.addEventListener("keydown", (ev) => {
+        if (ev.key !== "Backspace" && (elements.checkInput.value.length >= 1 || !validCharacters.includes(ev.key) || ev.key === "Dead")) {
+            ev.preventDefault();
+            elements.checkInput.value = elements.checkInput.value[0] || "";
+        }
+    });
 
-            console.log("Focus page stats")
-            statsPage.focus()
+    elements.checkBtn?.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        const char = elements.checkInput.value.trim();
+
+        if (!char) {
+            elements.usedCharsSpan.innerHTML = "No has introduït cap lletra.";
+            elements.checkInput.value = '';
+            return;
         }
 
+        if (usedChars.includes(char)) {
+            elements.usedCharsSpan.innerHTML = `La lletra [${char}] ja ha estat utilitzada`;
+            elements.checkInput.value = '';
+            return;
+        }
+
+        usedChars.push(char);
+        elements.usedCharsSpan.innerHTML = "[" + usedChars.join(', ') + "]";
+
+        if (randomWord.includes(char)) {
+            wordToGuess = wordToGuess.split('').map((letter, i) => randomWord[i] === char ? char : letter).join('');
+            elements.wordPlaceholder.innerHTML = wordToGuess.charAt(0).toUpperCase() + wordToGuess.slice(1);
+
+            if (wordToGuess === randomWord) {
+                alert("Felicitats! Has endevinat la paraula!");
+                counter = 0;
+            }
+        } else {
+            counter++;
+            hangmanPage?.postMessage({ counter }, "*");
+        }
+
+        elements.checkInput.value = '';
+        hangmanPage?.focus();
     });
-
-
-
-    checkBtn.addEventListener('submit', (ev) => {
-        if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
-        console.log('Check btn pressed');
-    });
-
 }
 
 function main() {
     const display = new DisplayOrder();
-
-    try {
-        display.changePage(2);
-    } catch (error) {
-        throw new Error(error);
-    }
+    display.changePage(2);
 }
 
-window.onload = () => {
-
-    console.log("Page is fully loaded");
-
-    try {
-        main();
-    } catch (error) {
-        console.error("An error occurred:", error);
-    }
-
-}
+window.addEventListener('load', () => {
+    console.log("Pàgina completament carregada");
+    main();
+});
