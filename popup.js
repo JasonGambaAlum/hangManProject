@@ -7,7 +7,11 @@ window.addEventListener("message", (ev) => {
     if (ev.origin !== "http://localhost:5500" && ev.origin !== "http://127.0.0.1:5500") return;
 
     if (img && ev.data.counter !== undefined) {
-        img.setAttribute('src', `./assets/images/image${ev.data.counter}.jpg`);
+        if (ev.data.counter >= 8) {
+            img.setAttribute('src', `./assets/images/image8.webp`);
+        } else{
+            img.setAttribute('src', `./assets/images/image${ev.data.counter}.jpg`);
+        }
     }
 
 });

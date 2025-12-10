@@ -1,5 +1,5 @@
 window.addEventListener("message", (event) => {
-    const { name, games, wins, losses } = event.data;
+    const { dateGame, wordToGuess, gameDuration, wonGames, losses } = event.data;
     
     const tbody = document.querySelector("table tbody");
     
@@ -7,9 +7,10 @@ window.addEventListener("message", (event) => {
     
     const row = document.createElement("tr");
     row.innerHTML = `
-        <td>${name}</td>
-        <td>${games}</td>
-        <td>${wins}</td>
+        <td>${dateGame}</td>
+        <td>${wordToGuess}</td>
+        <td>${gameDuration}</td>
+        <td>${wonGames}</td>
         <td>${losses}</td>
     `;
     

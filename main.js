@@ -7,6 +7,14 @@ class DataController {
         document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/`;
     }
 
+    setStats(name, stats) {
+        const coookie = this.getCookie(name);
+        if (!coookie) return;
+        const userData = JSON.parse(coookie);
+        userData.stats += stats;
+        this.setCookie(name, JSON.stringify(userData), 7);
+    }
+
     getCookie(name) {
         const cookies = document.cookie ? document.cookie.split('; ') : [];
         for (const cookie of cookies) {
@@ -15,6 +23,8 @@ class DataController {
         }
         return null;
     }
+
+
 
     setDataStorage(name, value) {
         localStorage.setItem(name, JSON.stringify(value));
@@ -37,6 +47,44 @@ class DataController {
         });
     }
 }
+
+class DisplayOrder {
+    constructor() { }
+
+    changePage(page, user = "No-user") {
+
+        const signupPage = document.getElementById("signup-section");
+        const loginPage = document.getElementById("login-section");
+        const gamePage = document.getElementById("game-section");
+
+        switch (page) {
+            case 1:
+                signupPage.style.display = "block";
+                loginPage.style.display = "none";
+                gamePage.style.display = "none";
+                signup();
+                break;
+            case 2:
+                signupPage.style.display = "none";
+                loginPage.style.display = "block";
+                //gamePage.style.display = "none";
+                login();
+                gamePage.style.display = "block";
+                game(user);
+                break;
+            case 3:
+                signupPage.style.display = "none";
+                loginPage.style.display = "none";
+                gamePage.style.display = "block";
+                game(user);
+                break;
+            default:
+                console.log("[Error 404]");
+                alert("[Error 404]");
+        }
+    }
+}
+
 
 function signup() {
     const signupForm = document.querySelector('#signup-form');
@@ -102,42 +150,6 @@ function login() {
     });
 }
 
-class DisplayOrder {
-    constructor() { }
-
-    changePage(page, user = "No-user") {
-
-        const signupPage = document.getElementById("signup-section");
-        const loginPage = document.getElementById("login-section");
-        const gamePage = document.getElementById("game-section");
-
-        switch (page) {
-            case 1:
-                signupPage.style.display = "block";
-                loginPage.style.display = "none";
-                gamePage.style.display = "none";
-                signup();
-                break;
-            case 2:
-                signupPage.style.display = "none";
-                loginPage.style.display = "block";
-                gamePage.style.display = "none";
-                login();
-                //gamePage.style.display = "block";
-                // game(user);
-                break;
-            case 3:
-                signupPage.style.display = "none";
-                loginPage.style.display = "none";
-                gamePage.style.display = "block";
-                game(user);
-                break;
-            default:
-                console.log("[Error 404]");
-                alert("[Error 404]");
-        }
-    }
-}
 
 function game(user) {
     let statsPage;
@@ -166,7 +178,9 @@ function game(user) {
         usedCharsSpan: document.getElementById("used-chars")
     };
 
-    const openWindow = (url, top, left) => window.open(url, "_blank", `scrollbars=yes,resizable=yes,top=${top},left=${left},height=350,width=650,fullscreen=0,menubar=0,location=0,toolbar=0`);
+    const openWindow = (url, top, left) => {
+        return window.open(url, "_blank", `scrollbars=yes,resizable=yes,top=${top},left=${left},height=350,width=650,fullscreen=0,menubar=0,location=0,toolbar=0`)
+    };
 
     elements.exitBtn.addEventListener('click', (ev) => {
         ev.preventDefault();
@@ -175,22 +189,24 @@ function game(user) {
 
     elements.playBtn.addEventListener('click', (ev) => {
         ev.preventDefault();
+        console.log(hangmanPage)
+
+
         randomWord = PARAULES[Math.floor(Math.random() * PARAULES.length)];
         wordToGuess = randomWord.replace(/./g, "X");
         usedChars = [];
         counter = 0;
+        elements.usedCharsSpan.innerHTML = "";
+
 
         elements.wordPlaceholder.innerHTML = wordToGuess;
         elements.wordSize.innerHTML = randomWord.length;
 
-        if (!hangmanPage || hangmanPage.closed) {
-            hangmanPage = openWindow("popup.html", 0, 1000);
-            elements.mainSection.style.display = 'block';
-            hangmanPage.postMessage({ data }, "*");
-            hangmanPage.focus();
-        } else {
-            hangmanPage.focus();
-        }
+        if (hangmanPage !== undefined) hangmanPage.close()
+
+        elements.mainSection.style.display = 'block';
+        hangmanPage = openWindow("popup.html", 0, 1000);
+        hangmanPage.focus();
     });
 
     elements.statsBtn?.addEventListener('click', (ev) => {
@@ -228,7 +244,7 @@ function game(user) {
         }
 
         usedChars.push(char);
-        elements.usedCharsSpan.innerHTML = "[" + usedChars.join(', ') + "]";
+        elements.usedCharsSpan.innerHTML = "[ " + usedChars.join(', ') + " ]";
 
         if (randomWord.includes(char)) {
             wordToGuess = wordToGuess.split('').map((letter, i) => randomWord[i] === char ? char : letter).join('');
@@ -237,10 +253,32 @@ function game(user) {
             if (wordToGuess === randomWord) {
                 alert("Felicitats! Has endevinat la paraula!");
                 counter = 0;
+                dataCtrl.setStats(user, {
+                    dateGame: new Date().toLocaleString(),
+                    wordToGuess: randomWord,
+                    gameDuration: "N/A",
+                    wonGames: 1,
+                    losses: 0
+                });
+
+                usedChars = [];
+                counter = 0;
+                elements.usedCharsSpan.innerHTML = "";
             }
         } else {
             counter++;
             hangmanPage?.postMessage({ counter }, "*");
+            dataCtrl.setStats(user, {
+                dateGame: new Date().toLocaleString(),
+                wordToGuess: randomWord,
+                gameDuration: "N/A",
+                wonGames: 0,
+                losses: 1
+            });
+
+            usedChars = [];
+            counter = 0;
+            elements.usedCharsSpan.innerHTML = "";
         }
 
         elements.checkInput.value = '';
