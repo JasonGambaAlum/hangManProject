@@ -159,7 +159,6 @@ function game(user) {
 
     const display = new DisplayOrder();
     const dataCtrl = new DataController();
-    const userData = dataCtrl.getCookie(user);
 
     let randomWord = '';
     let wordToGuess = '';
@@ -208,7 +207,7 @@ function game(user) {
         elements.wordPlaceholder.innerHTML = wordToGuess;
         elements.wordSize.innerHTML = randomWord.length;
 
-        if (hangmanPage !== undefined) hangmanPage.close()
+        if (hangmanPage !== undefined) hangmanPage.close();
 
         elements.mainSection.style.display = 'block';
         hangmanPage = openWindow("popup.html", 0, 1000);
@@ -217,15 +216,18 @@ function game(user) {
 
     elements.statsBtn?.addEventListener('click', (ev) => {
         ev.preventDefault();
+        const userData = dataCtrl.getCookie(user);
 
-        if (statsPage !== undefined) {
-            statsPage.close();
-        } else {
-            statsPage = openWindow("statistics.html", 500, 1000);
-            console.log("Opened statsPage", JSON.stringify(JSON.parse(userData).stats));
+        if (statsPage !== undefined) statsPage.close();
+
+        statsPage = openWindow("statistics.html", 500, 1000);
+        console.log("Opened statsPage", JSON.stringify(JSON.parse(userData).stats));
+        statsPage?.postMessage({ data: JSON.stringify(JSON.parse(userData).stats) }, "*");
+        statsPage.focus();
+        setTimeout(() => {
             statsPage?.postMessage({ data: JSON.stringify(JSON.parse(userData).stats) }, "*");
-            statsPage.focus();
-        }
+        }, 500)
+
     });
 
     elements.checkInput?.addEventListener("keydown", (ev) => {
@@ -281,7 +283,7 @@ function game(user) {
             }
         } else {
             counter++;
-            hangmanPage?.postMessage({ counter }, "*");
+            hangmanPage?.postMessage({ cntr: counter }, "*");
             if (counter >= 8) {
                 dataCtrl.setStats(user, {
                     dateGame: new Date().toLocaleString(),
