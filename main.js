@@ -248,11 +248,6 @@ function game(user) {
             buttonDialog: document.querySelector("dialog button")
         };
 
-        // Validate all elements exist
-        Object.entries(elements).forEach(([key, element]) => {
-            if (!element) console.warn(`Element ${key} not found`);
-        });
-
         const openWindow = (url, top, left) => {
             try {
                 return window.open(url, "_blank", `scrollbars=yes,resizable=yes,top=${top},left=${left},height=350,width=650,fullscreen=0,menubar=0,location=0,toolbar=0`);
@@ -325,7 +320,7 @@ function game(user) {
                     } catch (error) {
                         console.error("Error posting stats:", error);
                     }
-                }, 50);
+                }, 100);
             } catch (error) {
                 console.error("Error opening stats:", error);
             }
