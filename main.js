@@ -27,8 +27,6 @@ class DataController {
         return null;
     }
 
-
-
     setDataStorage(name, value) {
         localStorage.setItem(name, JSON.stringify(value));
     }
@@ -102,6 +100,7 @@ function signup() {
         if (dataObj.user_pass1 === dataObj.user_pass2) {
             spanError.style.display = 'none';
             dataObj.stats = [];
+            signupForm.reset();
             dataCtrl.setCookie(dataObj.user_name, JSON.stringify(dataObj), 7);
             display.changePage(3);
         } else {
@@ -111,7 +110,9 @@ function signup() {
 
     toLoginLink?.addEventListener('click', (ev) => {
         ev.preventDefault();
+        spanError.style.display = 'none';
         display.changePage(2);
+        signupForm.reset();
     });
 }
 
@@ -143,11 +144,14 @@ function login() {
 
         spanError.style.display = 'none';
         display.changePage(3, dataObj.user_name);
+        loginForm.reset();
     });
 
     signupLink?.addEventListener('click', (ev) => {
         ev.preventDefault();
+        spanError.style.display = 'none';
         display.changePage(1);
+        loginForm.reset();
     });
 }
 
@@ -194,8 +198,9 @@ function game(user) {
         ev.preventDefault();
 
         const PARAULES = [
-            "joc", "teclat", "pantalla",
+            "joc", "teclat", "amor", "java"
         ]
+
         randomWord = PARAULES[Math.floor(Math.random() * PARAULES.length)];
 
         wordToGuess = randomWord.replace(/./g, "X");
@@ -212,6 +217,15 @@ function game(user) {
         elements.mainSection.style.display = 'block';
         hangmanPage = openWindow("popup.html", 0, 1000);
         hangmanPage.focus();
+
+        var timer = setInterval(function () {
+            if (hangmanPage.closed) {
+                clearInterval(timer);
+                elements.mainSection.style.display = 'none';
+            }
+        }, 200);
+
+
     });
 
     elements.statsBtn?.addEventListener('click', (ev) => {
@@ -222,11 +236,10 @@ function game(user) {
 
         statsPage = openWindow("statistics.html", 500, 1000);
         console.log("Opened statsPage", JSON.stringify(JSON.parse(userData).stats));
-        statsPage?.postMessage({ data: JSON.stringify(JSON.parse(userData).stats) }, "*");
         statsPage.focus();
         setTimeout(() => {
             statsPage?.postMessage({ data: JSON.stringify(JSON.parse(userData).stats) }, "*");
-        }, 500)
+        }, 50)
 
     });
 
