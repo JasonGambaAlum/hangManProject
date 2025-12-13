@@ -122,6 +122,8 @@ function login() {
     const signupLink = document.querySelector('#to-signup');
     const display = new DisplayOrder();
     const dataCtrl = new DataController();
+    spanError.style.display = 'none';
+
 
     loginForm.addEventListener('submit', (ev) => {
         ev.preventDefault();
@@ -142,7 +144,6 @@ function login() {
             return;
         }
 
-        spanError.style.display = 'none';
         display.changePage(3, dataObj.user_name);
         loginForm.reset();
     });
@@ -191,6 +192,8 @@ function game(user) {
 
     elements.exitBtn.addEventListener('click', (ev) => {
         ev.preventDefault();
+        statsPage?.close();
+        hangmanPage?.close();
         display.changePage(2);
     });
 
@@ -207,8 +210,6 @@ function game(user) {
         usedChars = [];
         counter = 0;
         elements.usedCharsSpan.innerHTML = "";
-
-
         elements.wordPlaceholder.innerHTML = wordToGuess;
         elements.wordSize.innerHTML = randomWord.length;
 
@@ -224,7 +225,6 @@ function game(user) {
                 elements.mainSection.style.display = 'none';
             }
         }, 200);
-
 
     });
 
