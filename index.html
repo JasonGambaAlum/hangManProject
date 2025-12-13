@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="./styles.css">
     <script src="main.js"></script>
     <script src="paraules.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@hiseb/confetti@2.1.0/dist/confetti.min.js"></script>
 </head>
 
 <body>
+
     <section id="signup-section">
         <div class="card">
             <form id="signup-form">
@@ -72,8 +74,16 @@
             </div>
         </div>
     </section>
+    <dialog class="card">
+        <button autofocus>Tancar</button>
+        <p>
+            Has guanyat! <br>
+            pots continuar jugant i millorar la teva puntuació!
+        </p>
+    </dialog>
 
     <section id="game-section" class="main-game">
+
         <div>
             <header>
                 <h1>
@@ -84,6 +94,7 @@
                 </button>
             </header>
             <main>
+
                 <section style="display: flex;">
                     <button id="play-btn" class="game-mainmenu-btn">
                         JUGAR
@@ -101,8 +112,11 @@
                                 “Endevina la paraula de <span id="word-size" style="font-weight: bolder;"></span>
                                 lletres"
                             </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span id="used-chars" style="font-weight: bolder; margin: 10px; width: 100%; text-align: center;"></span>
+                            <div style="display: flex;flex-direction: column; justify-content: space-between;">
+                                <span id="used-chars"
+                                    style="font-weight: bolder; margin: 10px; width: 100%; text-align: center;"></span>
+                                <span id="error-char"
+                                    style="font-weight: bolder; margin: 10px; width: 100%; text-align: center;"></span>
                             </div>
                         </div>
                         <form id="user-choose">

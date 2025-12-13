@@ -46,6 +46,11 @@ body {
     color: #0f1724
 }
 
+
+dialog::backdrop {
+    backdrop-filter: blur(1px);
+}
+
 .input-wrapper {
     position: relative;
     margin-bottom: 12px

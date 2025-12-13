@@ -8,10 +8,13 @@ class DataController {
     }
 
     setStats(name, stats) {
+        console.log("User", name, "Stats", stats);
         const coookie = this.getCookie(name);
+        console.log(coookie);
         if (!coookie) return;
         const userData = JSON.parse(coookie);
-        userData.stats += stats;
+        console.log(userData);
+        userData.stats.push(stats);
         this.setCookie(name, JSON.stringify(userData), 7);
     }
 
@@ -51,7 +54,7 @@ class DataController {
 class DisplayOrder {
     constructor() { }
 
-    changePage(page, user = "No-user") {
+    changePage(page, user) {
 
         const signupPage = document.getElementById("signup-section");
         const loginPage = document.getElementById("login-section");
@@ -67,10 +70,8 @@ class DisplayOrder {
             case 2:
                 signupPage.style.display = "none";
                 loginPage.style.display = "block";
-                //gamePage.style.display = "none";
-                login();
-                gamePage.style.display = "block";
-                game(user);
+                gamePage.style.display = "none";
+                login()
                 break;
             case 3:
                 signupPage.style.display = "none";
@@ -100,7 +101,7 @@ function signup() {
 
         if (dataObj.user_pass1 === dataObj.user_pass2) {
             spanError.style.display = 'none';
-            dataObj.stats = {};
+            dataObj.stats = [];
             dataCtrl.setCookie(dataObj.user_name, JSON.stringify(dataObj), 7);
             display.changePage(3);
         } else {
@@ -158,7 +159,7 @@ function game(user) {
 
     const display = new DisplayOrder();
     const dataCtrl = new DataController();
-    const data = dataCtrl.getCookie(user);
+    const userData = dataCtrl.getCookie(user);
 
     let randomWord = '';
     let wordToGuess = '';
@@ -175,7 +176,10 @@ function game(user) {
         wordPlaceholder: document.getElementById("word-placeholder"),
         wordSize: document.getElementById("word-size"),
         checkInput: document.getElementById("check-inpt"),
-        usedCharsSpan: document.getElementById("used-chars")
+        usedCharsSpan: document.getElementById("used-chars"),
+        errorChar: document.getElementById("error-char"),
+        dialog: document.querySelector("dialog"),
+        buttonDialog: document.querySelector("dialog button")
     };
 
     const openWindow = (url, top, left) => {
@@ -189,10 +193,12 @@ function game(user) {
 
     elements.playBtn.addEventListener('click', (ev) => {
         ev.preventDefault();
-        console.log(hangmanPage)
 
-
+        const PARAULES = [
+            "joc", "teclat", "pantalla",
+        ]
         randomWord = PARAULES[Math.floor(Math.random() * PARAULES.length)];
+
         wordToGuess = randomWord.replace(/./g, "X");
         usedChars = [];
         counter = 0;
@@ -212,10 +218,12 @@ function game(user) {
     elements.statsBtn?.addEventListener('click', (ev) => {
         ev.preventDefault();
 
-        if (!statsPage || statsPage.closed) {
-            statsPage = openWindow("statistics.html", 500, 1000);
-            statsPage.postMessage({ data }, "*");
+        if (statsPage !== undefined) {
+            statsPage.close();
         } else {
+            statsPage = openWindow("statistics.html", 500, 1000);
+            console.log("Opened statsPage", JSON.stringify(JSON.parse(userData).stats));
+            statsPage?.postMessage({ data: JSON.stringify(JSON.parse(userData).stats) }, "*");
             statsPage.focus();
         }
     });
@@ -232,13 +240,13 @@ function game(user) {
         const char = elements.checkInput.value.trim();
 
         if (!char) {
-            elements.usedCharsSpan.innerHTML = "No has introduït cap lletra.";
+            elements.errorChar.innerHTML = "No has introduït cap lletra.";
             elements.checkInput.value = '';
             return;
         }
 
         if (usedChars.includes(char)) {
-            elements.usedCharsSpan.innerHTML = `La lletra [${char}] ja ha estat utilitzada`;
+            elements.errorChar.innerHTML = `La lletra [${char}] ja ha estat utilitzada`;
             elements.checkInput.value = '';
             return;
         }
@@ -247,12 +255,17 @@ function game(user) {
         elements.usedCharsSpan.innerHTML = "[ " + usedChars.join(', ') + " ]";
 
         if (randomWord.includes(char)) {
+            elements.errorChar.innerHTML = "";
             wordToGuess = wordToGuess.split('').map((letter, i) => randomWord[i] === char ? char : letter).join('');
             elements.wordPlaceholder.innerHTML = wordToGuess.charAt(0).toUpperCase() + wordToGuess.slice(1);
 
             if (wordToGuess === randomWord) {
-                alert("Felicitats! Has endevinat la paraula!");
-                counter = 0;
+                elements.usedCharsSpan.innerHTML = "[ " + usedChars.join(', ') + " ]";
+                confetti({
+                    position: { x: window.innerWidth / 2, y: 0 }
+                    , count: 1500
+                });
+                console.log("Has guanyat!");
                 dataCtrl.setStats(user, {
                     dateGame: new Date().toLocaleString(),
                     wordToGuess: randomWord,
@@ -260,25 +273,26 @@ function game(user) {
                     wonGames: 1,
                     losses: 0
                 });
-
-                usedChars = [];
-                counter = 0;
-                elements.usedCharsSpan.innerHTML = "";
+                elements.dialog.showModal();
+                elements.buttonDialog.addEventListener('click', () => {
+                    elements.dialog.close();
+                    elements.playBtn.click();
+                });
             }
         } else {
             counter++;
             hangmanPage?.postMessage({ counter }, "*");
-            dataCtrl.setStats(user, {
-                dateGame: new Date().toLocaleString(),
-                wordToGuess: randomWord,
-                gameDuration: "N/A",
-                wonGames: 0,
-                losses: 1
-            });
+            if (counter >= 8) {
+                dataCtrl.setStats(user, {
+                    dateGame: new Date().toLocaleString(),
+                    wordToGuess: randomWord,
+                    gameDuration: "N/A",
+                    wonGames: 0,
+                    losses: 1
+                });
 
-            usedChars = [];
-            counter = 0;
-            elements.usedCharsSpan.innerHTML = "";
+                elements.playBtn.click();
+            }
         }
 
         elements.checkInput.value = '';
@@ -292,6 +306,7 @@ function main() {
 }
 
 window.addEventListener('load', () => {
+
     console.log("Pàgina completament carregada");
     main();
 });
