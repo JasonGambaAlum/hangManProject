@@ -91,8 +91,17 @@
                     SORTIR ➜]
                 </button>
             </header>
+            <div>
+                <p>
+                    📝 Instruccions del Penjat  </p>
+                    <p>- El joc tria automàticament una paraula secreta.</p>
+                    <p>- Es mostren guions per cada lletra.</p>
+                    <p>- El jugador intenta endevinar lletres.</p>
+                    <p>- Si la lletra és correcta, es col·loca al seu lloc.</p>
+                    <p>- Si és incorrecta, es dibuixa una part del penjat.</p>
+                    <p>- El joc acaba quan s’endevina la paraula o es completa el dibuix.</p>
+            </div>
             <main>
-
                 <section style="display: flex;">
                     <button id="play-btn" class="game-mainmenu-btn">
                         JUGAR
@@ -104,8 +113,11 @@
                 <section id="main-section" style="display: none;">
                     <div id="main-container">
                         <div id="game-stats">
-                            <p style="text-align: center;" id="word-placeholder" aria-placeholder="XXXXXXXXX">
+                            <p style="text-align: center;" id="word-placeholder" aria-placeholder="_________">
                             </p>
+                            <div style="text-align: center; font-weight: bolder; margin: 10px;">
+                                <span id="timer">00:00</span>
+                            </div>
                             <div style="text-align: center;">
                                 “Endevina la paraula de <span id="word-size" style="font-weight: bolder;"></span>
                                 lletres"

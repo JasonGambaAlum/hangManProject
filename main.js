@@ -122,7 +122,7 @@ function signup() {
         const signupForm = document.querySelector('#signup-form');
         const toLoginLink = document.querySelector('#to-login');
         const spanError = document.getElementById('wrong-pass');
-        
+
         if (!signupForm || !spanError) {
             console.error("Signup form elements not found");
             return;
@@ -223,6 +223,10 @@ function game(user) {
         let statsPage;
         let hangmanPage;
         let counter = 0;
+        let timer = "00:00";
+        let intervalId;
+        let secretChar = '_';
+
 
         const display = new DisplayOrder();
         const dataCtrl = new DataController();
@@ -245,7 +249,8 @@ function game(user) {
             usedCharsSpan: document.getElementById("used-chars"),
             errorChar: document.getElementById("error-char"),
             dialog: document.querySelector("dialog"),
-            buttonDialog: document.querySelector("dialog button")
+            buttonDialog: document.querySelector("dialog button"),
+            timerDisplay: document.getElementById("timer")
         };
 
         const openWindow = (url, top, left) => {
@@ -273,13 +278,17 @@ function game(user) {
         elements.playBtn?.addEventListener('click', (ev) => {
             ev.preventDefault();
             try {
+                //This is just for testing purposes
                 const PARAULES = ["joc", "teclat", "amor", "java"];
 
+                clearInterval(intervalId);
                 randomWord = PARAULES[Math.floor(Math.random() * PARAULES.length)];
-                wordToGuess = randomWord.replace(/./g, "X");
+                wordToGuess = randomWord.replace(/./g, secretChar);
                 usedChars = [];
+                let minutes = 0;
+                let seconds = 0;
                 counter = 0;
-                
+
                 if (elements.usedCharsSpan) elements.usedCharsSpan.innerHTML = "";
                 if (elements.wordPlaceholder) elements.wordPlaceholder.innerHTML = wordToGuess;
                 if (elements.wordSize) elements.wordSize.innerHTML = randomWord.length;
@@ -290,12 +299,29 @@ function game(user) {
                 hangmanPage = openWindow("popup.html", 0, 1000);
                 hangmanPage?.focus();
 
-                let timer = setInterval(function () {
+                setInterval(() => {
                     if (hangmanPage?.closed) {
-                        clearInterval(timer);
-                        if (elements.mainSection) elements.mainSection.style.display = 'none';
+                        clearInterval(intervalId);
+                        clearInterval();
+                        elements.timerDisplay.innerHTML = "00:00";
+                        elements.mainSection.style.display = 'none';
                     }
-                }, 200);
+                }, 100);
+
+                intervalId = setInterval(() => {
+                    seconds++;
+                    if (seconds === 60) {
+                        minutes++;
+                        seconds = 0;
+                    }
+                    timer = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                    if (elements?.timerDisplay) {
+                        elements.timerDisplay.innerHTML = timer;
+                    }
+
+                }, 1000);
+
             } catch (error) {
                 console.error("Error starting game:", error);
             }
@@ -313,14 +339,14 @@ function game(user) {
                 statsPage?.close();
                 statsPage = openWindow("statistics.html", 500, 1000);
                 statsPage?.focus();
-                
+
                 setTimeout(() => {
                     try {
                         statsPage?.postMessage({ data: JSON.stringify(JSON.parse(userData).stats) }, "*");
                     } catch (error) {
                         console.error("Error posting stats:", error);
                     }
-                }, 100);
+                }, 150);
             } catch (error) {
                 console.error("Error opening stats:", error);
             }
@@ -360,7 +386,7 @@ function game(user) {
 
                     if (wordToGuess === randomWord) {
                         if (elements.usedCharsSpan) elements.usedCharsSpan.innerHTML = "[ " + usedChars.join(', ') + " ]";
-                        
+
                         try {
                             confetti({
                                 position: { x: window.innerWidth / 2, y: 0 },
@@ -373,7 +399,7 @@ function game(user) {
                         dataCtrl.setStats(user, {
                             dateGame: new Date().toLocaleString(),
                             wordToGuess: randomWord,
-                            gameDuration: "N/A",
+                            gameDuration: timer,
                             wonGames: 1,
                             losses: 0
                         });
@@ -391,12 +417,12 @@ function game(user) {
                 } else {
                     counter++;
                     hangmanPage?.postMessage({ cntr: counter }, "*");
-                    
+
                     if (counter >= 8) {
                         dataCtrl.setStats(user, {
                             dateGame: new Date().toLocaleString(),
                             wordToGuess: randomWord,
-                            gameDuration: "N/A",
+                            gameDuration: timer,
                             wonGames: 0,
                             losses: 1
                         });
